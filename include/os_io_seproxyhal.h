@@ -425,8 +425,6 @@ extern ux_state_t ux;
 #define UX_TICKER_EVENT(seph_packet, callback)                                 \
     UX_FORWARD_EVENT(                                                          \
         {                                                                      \
-            unsigned int UX_ALLOWED = (ux.params.len != BOLOS_UX_IGNORE &&     \
-                                       ux.params.len != BOLOS_UX_CONTINUE);    \
             if (ux.callback_interval_ms) {                                     \
                 ux.callback_interval_ms -= MIN(ux.callback_interval_ms, 100);  \
                 if (!ux.callback_interval_ms) {                                \
