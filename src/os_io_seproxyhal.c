@@ -126,9 +126,12 @@ void io_seproxyhal_handle_usb_ep_xfer_event(void) {
       break;
 
     case SEPROXYHAL_TAG_USB_EP_XFER_OUT:
-      // saved just in case it is needed ...
-      G_io_usb_ep_xfer_len[G_io_seproxyhal_spi_buffer[3]&0x7F] = G_io_seproxyhal_spi_buffer[5];
-      USBD_LL_DataOutStage(&USBD_Device, G_io_seproxyhal_spi_buffer[3]&0x7F, &G_io_seproxyhal_spi_buffer[6]);
+      if ((G_io_seproxyhal_spi_buffer[3]&0x7F) < IO_USB_MAX_ENDPOINTS) {
+        // saved just in case it is needed ...
+        G_io_usb_ep_xfer_len[G_io_seproxyhal_spi_buffer[3]&0x7F] = G_io_seproxyhal_spi_buffer[5];
+        // prepare reception
+        USBD_LL_DataOutStage(&USBD_Device, G_io_seproxyhal_spi_buffer[3]&0x7F, &G_io_seproxyhal_spi_buffer[6]);
+      }
       break;
   }
 }

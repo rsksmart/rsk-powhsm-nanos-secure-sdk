@@ -190,7 +190,7 @@ struct try_context_s {
 /* ----------------------------------------------------------------------- */
 
 // the global apdu buffer
-#define IO_APDU_BUFFER_SIZE (5 + 255)
+#define IO_APDU_BUFFER_SIZE (5 + 80)
 extern unsigned char G_io_apdu_buffer[IO_APDU_BUFFER_SIZE];
 
 extern try_context_t *G_try_last_open_context;
