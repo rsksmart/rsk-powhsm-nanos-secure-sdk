@@ -111,7 +111,10 @@ void io_seproxyhal_handle_usb_event(void) {
 }
 
 uint16_t io_seproxyhal_get_ep_rx_size(uint8_t epnum) {
-  return G_io_usb_ep_xfer_len[epnum&0x7F];
+  if ((epnum&0x7F) < IO_USB_MAX_ENDPOINTS) {
+    return G_io_usb_ep_xfer_len[epnum&0x7F];
+  }
+  THROW(EXCEPTION_OVERFLOW);
 }
 
 void io_seproxyhal_handle_usb_ep_xfer_event(void) {
