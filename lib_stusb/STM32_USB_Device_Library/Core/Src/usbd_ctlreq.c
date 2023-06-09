@@ -209,9 +209,15 @@ USBD_StatusTypeDef  USBD_StdEPReq (USBD_HandleTypeDef *pdev , USBD_SetupReqTyped
 {
   
   uint8_t   ep_addr;
-  USBD_StatusTypeDef ret = USBD_OK; 
+  USBD_StatusTypeDef ret = USBD_OK;
   USBD_EndpointTypeDef   *pep;
-  ep_addr  = LOBYTE(req->wIndex);   
+  ep_addr  = LOBYTE(req->wIndex);
+  
+  // avoid processing for out of bounds endpoints
+  if ((ep_addr & 0x7F) >= IO_USB_MAX_ENDPOINTS) {
+    USBD_CtlError(pdev , req);
+    return ret;
+  }
   
   /* Check if it is a class request */
   if ((req->bmRequest & 0x60) == 0x20)
